@@ -30,7 +30,7 @@ public class CandidatsService {
             circonscription = "0" + circonscription;
         }
 
-        if(!circonscription.startsWith(departement)){
+        if(!circonscription.startsWith(departement) || circonscription.length() < 4){
             circonscription = departement+circonscription;
         }
 
