@@ -21,6 +21,19 @@ public class CandidatsService {
     public List<Candidat> getCandidatsForDepartementAndCirconscription(
             String departement, String circonscription
     ){
-        return candidatsRepository.getCandidatsForDepartementAndCirconscription(departement, circonscription);
+        String normalizedCirconscription = this.normalizeCirconscription(departement, circonscription);
+        return candidatsRepository.getCandidatsForDepartementAndCirconscription(departement, normalizedCirconscription);
+    }
+
+    private String normalizeCirconscription(String departement, String circonscription){
+        if(circonscription.length() == 1){
+            circonscription = "0" + circonscription;
+        }
+
+        if(!circonscription.startsWith(departement)){
+            circonscription = departement+circonscription;
+        }
+
+        return circonscription;
     }
 }
