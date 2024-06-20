@@ -9,11 +9,17 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/")
-public class CandidatResource {
-    private  final CandidatsListRepository candidatsListRepository;
+public class CandidatsResource {
+    private  final CandidatsService candidatsService;
 
-    public CandidatResource(CandidatsListRepository candidatsListRepository) {
-        this.candidatsListRepository = candidatsListRepository;
+    public CandidatsResource(CandidatsService candidatsService) {
+        this.candidatsService = candidatsService;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Candidat> allCandidats(){
+        return candidatsService.getAll();
     }
 
     @GET
@@ -21,12 +27,7 @@ public class CandidatResource {
     @Path("/{departement}/{circonscription}")
     public List<Candidat> candidatsPourDepartementEtCirconscription(@PathParam("departement") String departement,
                                                                     @PathParam("circonscription") String circonscription){
-        return candidatsListRepository.getAll().stream().filter(
-                candidat -> {
-                    return candidat.departement().equals(departement)
-                            && candidat.circonscription().equals(circonscription);
-                }
-        ).toList();
+        return candidatsService.getCandidatsForDepartementAndCirconscription(departement, circonscription);
     }
 
 }

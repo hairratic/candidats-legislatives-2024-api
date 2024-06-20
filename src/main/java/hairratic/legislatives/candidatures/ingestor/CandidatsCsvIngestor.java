@@ -1,11 +1,12 @@
-package hairratic.legislatives.candidatures;
+package hairratic.legislatives.candidatures.ingestor;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
+import hairratic.legislatives.candidatures.Candidat;
+import hairratic.legislatives.candidatures.repository.CandidatsListRepository;
+import hairratic.legislatives.candidatures.repository.CandidatsRepository;
 import jakarta.enterprise.event.Observes;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -19,11 +20,11 @@ import io.quarkus.runtime.StartupEvent;
 
 public class CandidatsCsvIngestor {
     private final String csvURI;
-    private final CandidatsListRepository candidatsListRepository;
+    private final CandidatsRepository candidatsRepository;
 
-    public CandidatsCsvIngestor(@ConfigProperty(name = "csv.uri") String csvURI, CandidatsListRepository candidatsListRepository) {
+    public CandidatsCsvIngestor(@ConfigProperty(name = "csv.uri") String csvURI, CandidatsListRepository candidatsRepository) {
         this.csvURI = csvURI;
-        this.candidatsListRepository = candidatsListRepository;
+        this.candidatsRepository = candidatsRepository;
     }
 
     public void ingest(@Observes StartupEvent event) throws IOException {
@@ -33,7 +34,7 @@ public class CandidatsCsvIngestor {
                 .with(CsvSchema.emptySchema().withHeader())
                 .readValues(URI.create(csvURI).toURL())) {
             List<Candidat> candidats = it.readAll();
-            candidatsListRepository.setCandidats(candidats);
+            candidatsRepository.setCandidats(candidats);
             Log.infof("Ingested %d candidats.%n", candidats.size());
         }
     }
