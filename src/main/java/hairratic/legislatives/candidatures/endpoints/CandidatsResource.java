@@ -4,11 +4,11 @@ import hairratic.legislatives.candidatures.data.Candidat;
 import hairratic.legislatives.candidatures.services.CandidatsService;
 import hairratic.legislatives.circonscriptions.data.CirconscriptionProperties;
 import hairratic.legislatives.circonscriptions.services.CirconscriptionsService;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 import java.util.List;
 
@@ -20,6 +20,11 @@ public class CandidatsResource {
     public CandidatsResource(CandidatsService candidatsService, CirconscriptionsService circonscriptionsService) {
         this.candidatsService = candidatsService;
         this.circonscriptionsService = circonscriptionsService;
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<String> mapException(NotFoundException e) {
+        return RestResponse.status(Response.Status.NOT_FOUND, e.getMessage());
     }
 
     @GET
@@ -48,7 +53,8 @@ public class CandidatsResource {
     @Path("/coordinates/{XCoordinate}/{YCoordinate}")
     public List<Candidat> circonscriptionWithCoordinates(@PathParam("XCoordinate") float XCoordinates,
                                                          @PathParam("YCoordinate") float YCoordinates){
-        CirconscriptionProperties circonscription = circonscriptionsService.findCodeCirconscriptionWithCoordinates(XCoordinates, YCoordinates).orElseThrow();
+        CirconscriptionProperties circonscription = circonscriptionsService.findCodeCirconscriptionWithCoordinates(XCoordinates, YCoordinates)
+            .orElseThrow(() -> new NotFoundException("No circonscription found for given coordinates"));
         return candidatsService.getCandidatsForDepartementAndCirconscription(circonscription.codeDepartement(), circonscription.codeCirconscription());
     }
 }
