@@ -19,6 +19,10 @@ public class CandidatsService {
         return candidatsRepository.getAll();
     }
 
+    public List<Candidat> getCandidatsForDepartement(String departement){
+        return candidatsRepository.getCandidatsForDepartement(departement);
+    }
+
     public List<Candidat> getCandidatsForDepartementAndCirconscription(
             String departement, String circonscription
     ){

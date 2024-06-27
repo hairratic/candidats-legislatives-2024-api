@@ -10,4 +10,5 @@ public interface CandidatsRepository {
     public List<Candidat> getCandidatsForDepartementAndCirconscription(
             String departement, String circonscription
     );
+    public List<Candidat> getCandidatsForDepartement(String departement);
 }

@@ -21,10 +21,15 @@ public class CandidatsListRepository implements  CandidatsRepository{
             String departement, String circonscription
     ){
         return candidats.stream().filter(
-                candidat -> {
-                    return candidat.departement().equals(departement)
-                            && candidat.circonscription().equals(circonscription);
-                }
+                candidat -> candidat.departement().equals(departement)
+                        && candidat.circonscription().equals(circonscription)
+        ).toList();
+    }
+
+    @Override
+    public List<Candidat> getCandidatsForDepartement(String departement) {
+        return candidats.stream().filter(
+                candidat -> candidat.departement().equals(departement)
         ).toList();
     }
 

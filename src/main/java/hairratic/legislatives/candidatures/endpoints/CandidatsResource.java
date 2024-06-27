@@ -30,9 +30,16 @@ public class CandidatsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{departement}")
+    public List<Candidat> candidatsWithDepartement(@PathParam("departement") String departement){
+        return candidatsService.getCandidatsForDepartement(departement);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{departement}/{circonscription}")
-    public List<Candidat> candidatsWithDepartementEtCirconscription(@PathParam("departement") String departement,
-                                                                    @PathParam("circonscription") String circonscription){
+    public List<Candidat> candidatsWithDepartementAndCirconscription(@PathParam("departement") String departement,
+                                                                     @PathParam("circonscription") String circonscription){
         return candidatsService.getCandidatsForDepartementAndCirconscription(departement, circonscription);
     }
 
