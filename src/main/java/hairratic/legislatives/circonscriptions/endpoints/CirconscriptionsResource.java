@@ -8,6 +8,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
@@ -24,6 +25,7 @@ public class CirconscriptionsResource {
         return RestResponse.status(Response.Status.NOT_FOUND, e.getMessage());
     }
 
+    @Operation(summary = "Get circonscription(s) at position", description = "Returns a list of all circonscriptions at a given position")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{XCoordinates}/{YCoordinates}")
