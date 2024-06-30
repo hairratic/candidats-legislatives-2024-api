@@ -7,6 +7,7 @@ import hairratic.legislatives.circonscriptions.services.CirconscriptionsService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
@@ -27,12 +28,14 @@ public class CandidatsResource {
         return RestResponse.status(Response.Status.NOT_FOUND, e.getMessage());
     }
 
+    @Operation(summary = "Get all candidates", description = "Returns a list of all candidates for all departments and circonscriptions")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Candidat> allCandidats(){
         return candidatsService.getAll();
     }
 
+    @Operation(summary = "Get candidates for a department", description = "Returns a list of candidates for the given department")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{departement}")
@@ -40,6 +43,7 @@ public class CandidatsResource {
         return candidatsService.getCandidatsForDepartement(departement);
     }
 
+    @Operation(summary = "Get candidates for a department and a circonscription", description = "Returns a list of candidates for the given department and circonscription")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{departement}/{circonscription}")
@@ -48,6 +52,7 @@ public class CandidatsResource {
         return candidatsService.getCandidatsForDepartementAndCirconscription(departement, circonscription);
     }
 
+    @Operation(summary = "Get candidates at position", description = "Returns a list of candidates for the circonscription related to the given coordinates")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/coordinates/{XCoordinate}/{YCoordinate}")

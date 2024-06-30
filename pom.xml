@@ -61,6 +61,10 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-openapi</artifactId>
+        </dependency>
 
 
 
